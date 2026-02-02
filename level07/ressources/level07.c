@@ -27,24 +27,27 @@ unsigned int	get_unum()
 }
 
 
-int		read_number(int *buf)
+int		read_number(char *buf)
 {
 	// esp -= 0x28 (40 bytes)
 
 	unsigned int	index;		// ebp - 0xc	-> ebp - 0x8
+	unsigned int	*res;		// fake
 
 	printf(" Index: ");
 	index = get_unum();
-	printf(" Number at data[%u] is %u\n", index, buf[index << 2]);
+	res = &(buf[index << 2]);	// fake
+	printf(" Number at data[%u] is %u\n", index, *res);
 	return (0);
 }
 
-int		store_number(int *buf)
+int		store_number(char *buf)
 {
 	// esp -= 0x28 (40 bytes)
 
 	int	number = 0;		// ebp - 0x10	-> ebp - 0xc
 	int	index = 0;		// ebp - 0xc	-> ebp - 0x8
+	unsigned int	*res;		// fake
 
 	printf (" Number: ");
 	number = get_unum();
@@ -52,7 +55,8 @@ int		store_number(int *buf)
 	index = get_unum();
 	if (index % 3 != 0 && number >> 24 != 183)	// 0xb7 | 0xb7000 | 749568
 	{
-		buf[index << 2] = number;
+		res = &(buf[index << 2]);	// fake
+		*res = number;
 		return (0);
 	}
 	puts(" *** ERROR! ***");
